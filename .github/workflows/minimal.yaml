@@ -40,11 +40,11 @@ jobs:
         run: psr --help
 
       - name: ci-package-application
-        run: psr -s package-application
+        run: psr --help
 
       - name: ci-create-container-image
-        run: psr -s create-container-image
+        run: psr --help
 
       - name: ci-push-container-image-to-repository
-        run: psr -s push-container-image
+        run: psr --help
 
