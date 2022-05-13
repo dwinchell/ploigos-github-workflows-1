@@ -29,13 +29,22 @@ jobs:
   continous-integration:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+
+      - name: setup-app-clone
+        uses: actions/checkout@v3
+
+      - name: setup-workflow-step-runner
+        run: python -m pip install --upgrade git+https://github.com/ploigos/ploigos-step-runner.git@main
+
       - name: ci-generate-metadata
         run: psr --help
+
       - name: ci-package-application
         run: psr -s package-application
+
       - name: ci-create-container-image
         run: psr -s create-container-image
+
       - name: ci-push-container-image-to-repository
         run: psr -s push-container-image
 
