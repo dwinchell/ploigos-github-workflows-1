@@ -29,6 +29,7 @@ jobs:
 
       - name: ci-generate-metadata
         run: psr --help
+        # run: psr -s generate-metadata -c ${{ inputs.stepRunnerConfigDir }}
 
       - name: ci-package-application
         run: psr --help
