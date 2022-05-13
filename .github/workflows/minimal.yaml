@@ -26,57 +26,15 @@ on:
         required: true
         type: string
 jobs:
-  setup:
-    runs-on: [ self-hosted ]
-    container:
-      image: quay.io/ploigos/ploigos-base:latest.ubi8
-    steps:
-      - uses: actions/checkout@v3
-      - name: setup-app-clone
-        uses: ploigos/ploigos-github-workflows/.github/actions/setup-app-clone@main
-      - name: setup-workflow-step-runner
-        uses: ploigos/ploigos-github-workflows/.github/actions/setup-workflow-step-runner@main
-      - name: setup-pgp-keys
-        uses: ploigos/ploigos-github-workflows/.github/actions/setup-pgp-keys@main
   continous-integration:
-    needs: setup
-    runs-on: [ self-hosted ]
-    container:
-      image: quay.io/ploigos/ploigos-base:latest.ubi8
     steps:
       - uses: actions/checkout@v3
       - name: ci-generate-metadata
-        uses: ploigos/ploigos-github-workflows/.github/actions/ci-generate-metadata@main
+        run: psr --help
       - name: ci-package-application
-        uses: ploigos/ploigos-github-workflows/.github/actions/ci-package-application@main
+        run: psr -s package-application
       - name: ci-create-container-image
-        uses: ploigos/ploigos-github-workflows/.github/actions/ci-create-container-image@main
+        run: psr -s create-container-image
       - name: ci-push-container-image-to-repository
-        uses: ploigos/ploigos-github-workflows/.github/actions/ci-push-container-image-to-repository@main
-  dev:
-    needs: continous-integration
-    runs-on: [ self-hosted ]
-    container:
-      image: quay.io/ploigos/ploigos-base:latest.ubi8
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-or-update-environment
-        uses: ploigos/ploigos-github-workflows/.github/actions/deploy-or-update-environment@main
-  test:
-    needs: dev
-    runs-on: [ self-hosted ]
-    container:
-      image: quay.io/ploigos/ploigos-base:latest.ubi8
-    steps:
-      - uses: actions/checkout@v3
-      - name: deploy-or-update-environment
-        uses: ploigos/ploigos-github-workflows/.github/actions/deploy-or-update-environment@main
-  report:
-    needs: test
-    runs-on: [ self-hosted ]
-    container:
-      image: quay.io/ploigos/ploigos-base:latest.ubi8
-    steps:
-      - uses: actions/checkout@v3
-      - name: report
-        uses: ploigos/ploigos-github-workflows/.github/actions/report@main
+        run: psr -s push-container-image
+
